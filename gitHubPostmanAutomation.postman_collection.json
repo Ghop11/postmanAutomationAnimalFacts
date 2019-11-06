@@ -1,0 +1,439 @@
+{
+	"info": {
+		"_postman_id": "9cc77a76-336e-4060-a3c0-7c3bfc995aa8",
+		"name": "gitHubPostmanAutomation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Random Animal Facts",
+			"item": [
+				{
+					"name": "Get Random Facts",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d9857cf1-d1d7-41a5-a941-e24a5d00c3a5",
+								"exec": [
+									"postman.setEnvironmentVariable(\"baseUrl\", \"https://cat-fact.herokuapp.com/facts\");",
+									"postman.setEnvironmentVariable(\"facts\", \"/facts\");",
+									"postman.setEnvironmentVariable(\"random\", \"/random\");",
+									"postman.setEnvironmentVariable(\"dog\", \"animal_type=dog\");",
+									"postman.setEnvironmentVariable(\"cat\", \"animal_type=cat\");",
+									"postman.setEnvironmentVariable(\"horse\", \"animal_type=horse\");",
+									"postman.setEnvironmentVariable(\"cow\", \"animal_type=cow\");",
+									"postman.setEnvironmentVariable(\"pig\", \"animal_type=pig\");",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "9431d20b-b75b-45b6-be19-c34e70063c30",
+								"exec": [
+									"let jsonData = JSON.parse(responseBody)",
+									"",
+									"tests[\"Status Code is 200\"] = responseCode.code === 200;",
+									"tests[\"Type is cat\"]  = jsonData.type == \"cat\";",
+									"tests[\"Return text\"]  = jsonData.text.length >= 1;",
+									"tests[\"_id is Return\"] = jsonData._id;",
+									"",
+									"if (jsonData._id){",
+									"    postman.setEnvironmentVariable(\"_id\", jsonData._id);",
+									"}",
+									"",
+									"postman.setEnvironmentVariable(\"_idText\", jsonData.text);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/random",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"random"
+							]
+						},
+						"description": "Default type is cat when animal_type query string is not added"
+					},
+					"response": []
+				},
+				{
+					"name": "Get ID Fact - default cat",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1142c891-6f43-440f-a3db-ce896ff884e4",
+								"exec": [
+									"let jsonData = JSON.parse(responseBody)",
+									"",
+									"tests[\"Status Code is 200\"] = responseCode.code === 200;",
+									"tests[\"Type is cat\"]  = jsonData.type == \"cat\";",
+									"tests[\"Return text\"]  = jsonData.text.length >= 1;",
+									"",
+									"",
+									"",
+									"tests[\"_id matches pervious _id\"] = jsonData._id == postman.__environment._id;",
+									"tests[\"The fact text from the pervious matches current call\"] = jsonData.text == postman.__environment._idText;",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/{{_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Random Fact - Dog",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e181ff7d-c7c3-4760-9436-0ddeceb6baa7",
+								"exec": [
+									"let jsonData = JSON.parse(responseBody)",
+									"",
+									"tests[\"Status Code is 200\"] = responseCode.code === 200;",
+									"tests[\"Type is dog\"]  = jsonData.type == \"dog\";",
+									"tests[\"Return text\"]  = jsonData.text.length >= 1;",
+									"tests[\"_id is Return\"] = jsonData._id;",
+									"",
+									"if (jsonData._id){",
+									"    postman.setEnvironmentVariable(\"_id\", jsonData._id);",
+									"}",
+									"",
+									"postman.setEnvironmentVariable(\"_idText\", jsonData.text);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/random?animal_type=dog",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"random"
+							],
+							"query": [
+								{
+									"key": "animal_type",
+									"value": "dog"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get ID Fact - Dog",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a64e8d42-2861-4d78-9f0c-93ab33eb86c4",
+								"exec": [
+									"let jsonData = JSON.parse(responseBody)",
+									"",
+									"tests[\"Status Code is 200\"] = responseCode.code === 200;",
+									"tests[\"Type is dog\"]  = jsonData.type == \"dog\";",
+									"tests[\"Return text\"]  = jsonData.text.length >= 1;",
+									"",
+									"",
+									"",
+									"tests[\"_id matches pervious _id\"] = jsonData._id == postman.__environment._id;",
+									"tests[\"The fact text from the pervious matches current call\"] = jsonData.text == postman.__environment._idText;",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/{{_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Random Fact - Horse",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e181ff7d-c7c3-4760-9436-0ddeceb6baa7",
+								"exec": [
+									"let jsonData = JSON.parse(responseBody)",
+									"",
+									"tests[\"Status Code is 200\"] = responseCode.code === 200;",
+									"tests[\"Type is horse\"]  = jsonData.type == \"horse\";",
+									"tests[\"Return text\"]  = jsonData.text.length >= 1;",
+									"tests[\"_id is Return\"] = jsonData._id;",
+									"",
+									"if (jsonData._id){",
+									"    postman.setEnvironmentVariable(\"_id\", jsonData._id);",
+									"}",
+									"",
+									"postman.setEnvironmentVariable(\"_idText\", jsonData.text);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/random?animal_type=horse",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"random"
+							],
+							"query": [
+								{
+									"key": "animal_type",
+									"value": "horse"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get ID Fact - Horse",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a64e8d42-2861-4d78-9f0c-93ab33eb86c4",
+								"exec": [
+									"let jsonData = JSON.parse(responseBody)",
+									"",
+									"tests[\"Status Code is 200\"] = responseCode.code === 200;",
+									"tests[\"Type is horse\"]  = jsonData.type == \"horse\";",
+									"tests[\"Return text\"]  = jsonData.text.length >= 1;",
+									"",
+									"",
+									"",
+									"tests[\"_id matches pervious _id\"] = jsonData._id == postman.__environment._id;",
+									"tests[\"The fact text from the pervious matches current call\"] = jsonData.text == postman.__environment._idText;",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/{{_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get \"5\" Random Facts horse",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e3c64387-38fd-4fe3-ad87-101f916f4d84",
+								"exec": [
+									"let jsonData = JSON.parse(responseBody)",
+									"console.log(jsonData)",
+									"",
+									"tests[\"Status Code is 200\"] = responseCode.code === 200;",
+									"",
+									"let i = 1;",
+									"jsonData.forEach((fact)=>{",
+									"    tests[i + \" Type is horse\"]  = fact.type == \"horse\";",
+									"    tests[i + \" Return text\"]  = fact.text.length >= 1;",
+									"    tests[i + \" _id is Return\"] = fact._id;",
+									"    console.log(i + ' Checking Fact');",
+									"    i++;",
+									"})",
+									"",
+									"tests[\"Number of facts return should be 5\"] = jsonData.length == 5;",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d1fb3c68-8e00-463d-aceb-18eea1f4fa6b",
+								"exec": [
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/random?animal_type=horse&amount=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"random"
+							],
+							"query": [
+								{
+									"key": "animal_type",
+									"value": "horse"
+								},
+								{
+									"key": "amount",
+									"value": "5"
+								}
+							]
+						},
+						"description": "Default type is cat when animal_type query string is not added"
+					},
+					"response": []
+				}
+			],
+			"description": "Documentation: https://alexwohlbruck.github.io/cat-facts/docs/endpoints/facts.html",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a810c999-7ddb-4c52-b59f-21204963120a",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "c6f2d325-e1da-462c-b1a2-494ace923058",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
